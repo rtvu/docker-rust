@@ -3,9 +3,9 @@ name: On Push Dockerfile
 on:
   push:
     branches:
-      - "main"
+      - 'main'
     paths:
-      - "Dockerfile"
+      - 'Dockerfile'
 
 jobs:
   on-push-dockerfile:

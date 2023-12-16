@@ -3,9 +3,9 @@ name: On Push README
 on:
   push:
     branches:
-      - "main"
+      - 'main'
     paths:
-      - "README.md"
+      - 'README.md'
 
 jobs:
   on-push-readme:

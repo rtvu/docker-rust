@@ -2,7 +2,7 @@ name: On Schedule Base Image Change
 
 on:
   schedule:
-    - cron:  "0 7 * * *"
+    - cron:  '0 7 * * *'
 
 jobs:
   check-base-image:
@@ -20,7 +20,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
   on-base-image-change:
     needs: check-base-image
-    if: needs.check-base-image.outputs.needs-updating == "true"
+    if: needs.check-base-image.outputs.needs-updating == 'true'
     uses: ./.github/workflows/build-and-publish-to-docker-hub.yml
     with:
       repository: ${{ github.repository }}
