@@ -1,0 +1,15 @@
+name: On Push Dockerfile
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  on-push-dockerfile:
+    uses: ./.github/workflows/build-and-publish-to-docker-hub.yml
+    with:
+      repository: ${{ github.repository }}
+    secrets:
+      username: ${{ secrets.DOCKERHUB_USERNAME }}
+      password: ${{ secrets.DOCKERHUB_TOKEN }}

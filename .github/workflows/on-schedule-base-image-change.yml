@@ -1,0 +1,29 @@
+name: On Schedule Base Image Change
+
+on:
+  schedule:
+    - cron:  "0 7 * * *"
+
+jobs:
+  check-base-image:
+    runs-on: ubuntu-latest
+    outputs:
+      needs-updating: ${{ steps.check.outputs.needs-updating }}
+    steps:
+      -
+        name: Check for base image change
+        id: check
+        uses: lucacome/docker-image-update-checker@v1
+        with:
+          base-image: rtvu/docker-ubuntu
+          image: ${{ github.repository }}:latest
+          platforms: linux/amd64,linux/arm64
+  on-base-image-change:
+    needs: check-base-image
+    if: needs.check-base-image.outputs.needs-updating == "true"
+    uses: ./.github/workflows/build-and-publish-to-docker-hub.yml
+    with:
+      repository: ${{ github.repository }}
+    secrets:
+      username: ${{ secrets.DOCKERHUB_USERNAME }}
+      password: ${{ secrets.DOCKERHUB_TOKEN }}

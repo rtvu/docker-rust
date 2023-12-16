@@ -1,0 +1,29 @@
+name: On Push README
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  on-push-readme:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout repository
+        uses: actions/checkout@v4
+      -
+        name: Update repository description
+        id: get-description
+        uses: rtvu/update-description-using-readme@v1.0.2
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ secrets.REPOSITORY_PAT }}
+      -
+        name: Update Docker Hub repository description
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          short-description: ${{ steps.get-description.outputs.description }}
