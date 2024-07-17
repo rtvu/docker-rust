@@ -2,14 +2,14 @@
 # Base Image #
 ##############
 
-FROM rtvu/docker-ubuntu
+FROM rtvu/docker-ubuntu:24.04
 
 #########################
 # Environment Variables #
 #########################
 
-ENV ASDF_VERSION=v0.13.1
-ENV RUST_VERSION=1.74.1
+ENV ASDF_VERSION=v0.14.0
+ENV RUST_VERSION=1.79.0
 
 ################
 # Install asdf #
