@@ -1,0 +1,36 @@
+name: 'On Push README'
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'README.md'
+  workflow_dispatch:
+
+jobs:
+  on-push-readme:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: 'Checkout repository'
+        uses: actions/checkout@v4
+      -
+        name: 'Get README description'
+        id: get-description
+        uses: rtvu/get-description-from-readme-action@v1.0.1
+      -
+        name: 'Set repository description'
+        uses: rtvu/set-repository-description-action@v1.0.1
+        with:
+          description: ${{ steps.get-description.outputs.description }}
+          repository: ${{ github.repository }}
+          token: ${{ secrets.REPOSITORY_PAT }}
+      -
+        name: 'Set Docker Hub repository description'
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+          repository: ${{ github.repository }}
+          short-description: ${{ steps.get-description.outputs.description }}
