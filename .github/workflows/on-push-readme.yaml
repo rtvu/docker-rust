@@ -18,19 +18,18 @@ jobs:
       -
         name: 'Get README description'
         id: get-description
-        uses: rtvu/get-description-from-readme-action@v1.0.1
+        uses: rtvu/get-description-from-readme-action@v1
       -
         name: 'Set repository description'
-        uses: rtvu/set-repository-description-action@v1.0.1
+        uses: rtvu/set-repository-description-action@v1
         with:
           description: ${{ steps.get-description.outputs.description }}
-          repository: ${{ github.repository }}
-          token: ${{ secrets.REPOSITORY_PAT }}
+          token: ${{ secrets.REPOSITORY_TOKEN }}
       -
         name: 'Set Docker Hub repository description'
         uses: peter-evans/dockerhub-description@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-          repository: ${{ github.repository }}
+          repository: ${{ vars.IMAGE }}
           short-description: ${{ steps.get-description.outputs.description }}

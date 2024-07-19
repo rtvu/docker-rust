@@ -1,8 +1,5 @@
 name: 'On Schedule Base Image Change'
 
-env:
-  TAGS: 1.79.0,1.79
-
 on:
   schedule:
     - cron:  '0 7 1,15 * *'
@@ -17,9 +14,9 @@ jobs:
         id: base-image-change
         uses: lucacome/docker-image-update-checker@v1
         with:
-          base-image: rtvu/docker-ubuntu:24.04
-          image: ${{ github.repository }}:latest
-          platforms: linux/amd64,linux/arm64
+          base-image: ${{ vars.BASE_IMAGE }}
+          image: ${{ vars.IMAGE }}:latest
+          platforms: ${{ vars.PLATFORMS }}
       -
         name: 'Checkout repository'
         if: steps.base-image-change.outputs.needs-updating == 'true'
@@ -27,11 +24,11 @@ jobs:
       -
         name: 'Build and push image'
         if: steps.base-image-change.outputs.needs-updating == 'true'
-        uses: rtvu/build-and-push-to-docker-hub-action@v2.0.0
+        uses: rtvu/build-and-push-to-docker-hub-action@v2
         with:
-          image: ${{ github.repository }}
+          image: ${{ vars.IMAGE }}
           latest: true
-          platforms: linux/amd64,linux/arm64
-          tags: ${{ env.TAGS }}
+          platforms: ${{ vars.PLATFORMS }}
+          tags: ${{ vars.TAGS }}
           token: ${{ secrets.DOCKER_HUB_TOKEN }}
           username: ${{ secrets.DOCKER_HUB_USERNAME }}

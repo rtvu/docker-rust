@@ -1,8 +1,5 @@
 name: 'On Push Dockerfile'
 
-env:
-  TAGS: 1.79.0,1.79
-
 on:
   push:
     branches:
@@ -20,11 +17,11 @@ jobs:
         uses: actions/checkout@v4
       -
         name: 'Build and push image'
-        uses: rtvu/build-and-push-to-docker-hub-action@v2.0.0
+        uses: rtvu/build-and-push-to-docker-hub-action@v2
         with:
-          image: ${{ github.repository }}
+          image: ${{ vars.IMAGE }}
           latest: true
-          platforms: linux/amd64,linux/arm64
-          tags: ${{ env.TAGS }}
+          platforms: ${{ vars.PLATFORMS }}
+          tags: ${{ vars.TAGS }}
           token: ${{ secrets.DOCKER_HUB_TOKEN }}
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
