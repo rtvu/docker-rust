@@ -2,7 +2,7 @@
 # Base Image #
 ##############
 
-FROM rtvu/docker-ubuntu:24.04
+FROM rtvu/ubuntu:24.04
 
 #########################
 # Environment Variables #
